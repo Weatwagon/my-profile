@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Zack Jones — Integration Specialist, Builder & Tinkerer</title>
+  <meta name="description" content="Zachary Lloyd Jones (Weatwagon) — Integration Specialist and software developer in Louisiana. Connecting systems by day; tinkering with AI, self-hosted servers, and tabletop worlds by night." />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #0c0e12;
+      --bg-surface: #13161d;
+      --bg-surface-hover: #181c25;
+      --bg-elevated: #1c202a;
+      --border-subtle: rgba(255, 240, 224, 0.08);
+      --border-warm: rgba(232, 152, 92, 0.28);
+      --text-primary: #f5efe6;
+      --text-secondary: #b5aba0;
+      --text-muted: #7d756c;
+      --accent-amber: #e6975c;
+      --accent-copper: #c86d3b;
+      --accent-glow: rgba(230, 151, 92, 0.16);
+      --accent-sage: #7ea88e;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(900px 600px at 85% 5%, rgba(200, 109, 59, 0.16), transparent 60%),
+        radial-gradient(700px 500px at 10% 35%, rgba(126, 168, 142, 0.06), transparent 55%),
+        var(--bg-base);
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Subtle tactile grain overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Interactive cursor dusk aura */
+    .cursor-aura {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(230, 151, 92, 0.09) 0%, rgba(200, 109, 59, 0.03) 40%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Navigation */
+    header.site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(12, 14, 18, 0.72);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .brand {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-amber);
+      box-shadow: 0 0 12px rgba(230, 151, 92, 0.7);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-cta {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(230, 151, 92, 0.12);
+      border: 1px solid var(--border-warm);
+      color: var(--accent-amber) !important;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: rgba(230, 151, 92, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 88px 0 64px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-amber);
+      margin-bottom: 18px;
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(3.3rem, 6.2vw, 5.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent-amber);
+    }
+
+    .hero-lead {
+      font-size: clamp(1.06rem, 1.4vw, 1.22rem);
+      color: var(--text-secondary);
+      max-width: 56ch;
+      margin-bottom: 32px;
+      line-height: 1.68;
+    }
+
+    .hero-lead strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 24px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-amber);
+      color: #120d08;
+      font-weight: 600;
+      font-size: 0.94rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: #efa66f;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(230, 151, 92, 0.24);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.94rem;
+      text-decoration: none;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-warm);
+      background: var(--bg-surface-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Portrait Card */
+    .portrait-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .portrait-card {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      background: linear-gradient(160deg, rgba(230, 151, 92, 0.14), rgba(19, 22, 29, 0.92) 48%);
+      border: 1px solid var(--border-warm);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+    }
+
+    .portrait-frame {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #1a1d26;
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.03) saturate(0.95);
+      transition: transform 0.5s ease;
+    }
+
+    .portrait-card:hover .portrait-frame img {
+      transform: scale(1.04);
+    }
+
+    .portrait-meta {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 4px 2px;
+    }
+
+    .portrait-location {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .portrait-handle {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent-amber);
+      background: rgba(230, 151, 92, 0.1);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    /* Section Headings */
+    section {
+      padding: 56px 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-amber);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.1rem, 3.6vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      max-width: 44ch;
+      font-size: 0.96rem;
+    }
+
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .bento-card {
+      background: linear-gradient(180deg, rgba(25, 29, 38, 0.85), rgba(16, 19, 26, 0.95));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-warm);
+      background: linear-gradient(180deg, rgba(30, 34, 44, 0.92), rgba(18, 21, 28, 0.98));
+    }
+
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .card-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-amber);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .bento-card h3 {
+      font-size: 1.32rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .bento-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-primary);
+      background: rgba(255, 244, 232, 0.05);
+      border: 1px solid rgba(255, 244, 232, 0.09);
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .bento-card:hover .tag {
+      border-color: rgba(230, 151, 92, 0.22);
+    }
+
+    .node-graphic {
+      position: absolute;
+      right: -12px;
+      bottom: -14px;
+      width: 170px;
+      height: 140px;
+      opacity: 0.45;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.4s ease;
+    }
+
+    .bento-card:hover .node-graphic {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .stat-item strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .stat-item span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Story Section */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 26px;
+      padding: 40px;
+    }
+
+    .story-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3vw, 2.5rem);
+      line-height: 1.16;
+      color: var(--text-primary);
+    }
+
+    .story-quote em {
+      color: var(--accent-amber);
+      font-style: italic;
+    }
+
+    .story-copy p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+
+    .story-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Projects List */
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px 26px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-warm);
+      background: var(--bg-surface-hover);
+    }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .project-name {
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .project-arrow {
+      color: var(--accent-amber);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      transition: transform 0.2s ease;
+    }
+
+    .project-card:hover .project-arrow {
+      transform: translate(3px, -3px);
+    }
+
+    .project-desc {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    .project-meta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 14px;
+    }
+
+    /* Contact / Footer */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(230, 151, 92, 0.12), rgba(19, 22, 29, 0.96) 55%);
+      border: 1px solid var(--border-warm);
+      border-radius: 28px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .contact-box h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .contact-box p {
+      color: var(--text-secondary);
+      max-width: 46ch;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .social-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 36px 0 88px;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 48px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .social-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--accent-amber);
+    }
+
+    /* Draft Switcher Pill */
+    .draft-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 60;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(19, 22, 29, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-pill);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    .draft-switcher a {
+      color: var(--accent-amber);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .draft-switcher a:hover {
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--accent-amber);
+      color: #120d08;
+      font-weight: 600;
+      font-size: 0.86rem;
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 70;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 56px 0 40px;
+      }
+      .portrait-wrap {
+        justify-content: flex-start;
+      }
+      .span-7, .span-5, .span-6, .span-4, .span-8 {
+        grid-column: span 12;
+      }
+      .story-grid, .project-list {
+        grid-template-columns: 1fr;
+      }
+      .story-grid, .contact-box {
+        padding: 28px 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        gap: 16px;
+      }
+      .nav-links li:nth-child(2),
+      .nav-links li:nth-child(3) {
+        display: none;
+      }
+      .stat-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-aura" id="cursorAura" aria-hidden="true"></div>
+
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark"></span>
+        zackjones.net
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#work">What I Do</a></li>
+          <li><a href="#story">Who I Am</a></li>
+          <li><a href="#projects">Tinkering</a></li>
+          <li><a href="#contact" class="nav-cta">Say Hello</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero">
+      <div>
+        <span class="hero-eyebrow">Louisiana &bull; Integration Specialist &amp; Software Developer</span>
+        <h1>Hey, I&rsquo;m <em>Zack Jones</em>.</h1>
+        <p class="hero-lead">
+          I connect complex systems and build practical software by day—and tinker with
+          <strong>AI workflows, self-hosted game servers, and tabletop worlds</strong> by night.
+        </p>
+        <div class="hero-actions">
+          <a href="#work" class="btn-primary">See What I&rsquo;m About &darr;</a>
+          <button type="button" class="btn-secondary" id="copyEmailHero">zack@zackjones.net</button>
+        </div>
+      </div>
+
+      <div class="portrait-wrap">
+        <div class="portrait-card">
+          <div class="portrait-frame">
+            <img src="https://avatars.githubusercontent.com/u/20859945?v=4" alt="Zachary Lloyd Jones" />
+          </div>
+          <div class="portrait-meta">
+            <span class="portrait-location">Louisiana, USA</span>
+            <span class="portrait-handle">@Weatwagon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="reveal">
+      <div class="section-header">
+        <div>
+          <span class="section-label">01 / The Mix</span>
+          <h2 class="section-title">What I do &amp; what keeps me curious.</h2>
+        </div>
+        <p class="section-subtitle">
+          A snapshot of my day-to-day engineering craft alongside the rabbit holes I love exploring off the clock.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <article class="bento-card span-7">
+          <span class="card-kicker">What I Do</span>
+          <h3>Systems Integration &amp; Full-Stack Craft</h3>
+          <p>
+            I specialize in making different platforms, APIs, and teams speak the same language.
+            Whether I&rsquo;m wiring up reliable backend pipelines or shaping clean web interfaces,
+            I care about software that actually holds up in the real world.
+          </p>
+          <div class="tag-row">
+            <span class="tag">TypeScript / JS</span>
+            <span class="tag">Python</span>
+            <span class="tag">Java</span>
+            <span class="tag">HTML5 &amp; Sass</span>
+            <span class="tag">Vue / Angular</span>
+            <span class="tag">Docker &amp; Linux</span>
+            <span class="tag">Git</span>
+          </div>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <strong>Integrations</strong>
+              <span>APIs, data flows &amp; glue code</span>
+            </div>
+            <div class="stat-item">
+              <strong>Full-Stack</strong>
+              <span>From UI polish to containers</span>
+            </div>
+            <div class="stat-item">
+              <strong>Pragmatic</strong>
+              <span>Right tool for the job</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-card span-5">
+          <span class="card-kicker">AI &amp; Creative Tech</span>
+          <h3>ComfyUI &amp; Agentic Workflows</h3>
+          <p>
+            Deeply fascinated by local generative pipelines and AI-assisted engineering—building custom
+            ComfyUI prompt-enhancement nodes and structured multi-stage review workflows.
+          </p>
+          <div class="tag-row">
+            <span class="tag">ComfyUI</span>
+            <span class="tag">Qwen-Image</span>
+            <span class="tag">Agent Skills</span>
+            <span class="tag">Automation</span>
+          </div>
+          <svg class="node-graphic" viewBox="0 0 180 140" fill="none" aria-hidden="true">
+            <line x1="42" y1="88" x2="96" y2="56" stroke="#e6975c" stroke-width="1.5" stroke-opacity="0.55" />
+            <line x1="96" y1="56" x2="148" y2="38" stroke="#e6975c" stroke-width="1.5" stroke-opacity="0.55" />
+            <line x1="96" y1="56" x2="136" y2="104" stroke="#e6975c" stroke-width="1.5" stroke-opacity="0.45" />
+            <circle cx="42" cy="88" r="8" fill="#181c25" stroke="#e6975c" stroke-width="1.8" />
+            <circle cx="96" cy="56" r="14" fill="rgba(230,151,92,0.22)" stroke="#e6975c" stroke-width="2" />
+            <circle cx="148" cy="38" r="7" fill="#181c25" stroke="#e6975c" stroke-width="1.8" />
+            <circle cx="136" cy="104" r="9" fill="#181c25" stroke="#e6975c" stroke-width="1.8" />
+          </svg>
+        </article>
+
+        <article class="bento-card span-5">
+          <span class="card-kicker">Homelab &amp; Self-Hosting</span>
+          <h3>Containers, ARM64 &amp; Game Servers</h3>
+          <p>
+            I love running my own infrastructure—maintaining custom Docker images and Pterodactyl eggs
+            for dedicated game servers, tinkering with Windows Sandbox configs, and tightening up email
+            security with MTA-STS.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Pterodactyl</span>
+            <span class="tag">ARM64</span>
+            <span class="tag">Self-Hosted</span>
+            <span class="tag">Security</span>
+          </div>
+        </article>
+
+        <article class="bento-card span-7">
+          <span class="card-kicker">Off the Clock</span>
+          <h3>Tabletop Campaigns, Gaming &amp; Louisiana Roots</h3>
+          <p>
+            When I step away from production systems, you&rsquo;ll usually find me rolling dice in a
+            tabletop RPG campaign (even building browser enhancements for D&amp;D Beyond character sheets),
+            queuing up on Xbox as <strong>Weatwagon</strong>, or enjoying good company and good food back
+            home in Louisiana.
+          </p>
+          <div class="tag-row">
+            <span class="tag">D&amp;D / Tabletop RPGs</span>
+            <span class="tag">Xbox &bull; @Weatwagon</span>
+            <span class="tag">Louisiana</span>
+            <span class="tag">Always Tinkering</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="story" class="reveal">
+      <div class="section-header">
+        <div>
+          <span class="section-label">02 / Who I Am</span>
+          <h2 class="section-title">More than a stack of logos.</h2>
+        </div>
+      </div>
+
+      <div class="story-grid">
+        <blockquote class="story-quote">
+          &ldquo;I like the moment when two stubborn systems&mdash;or a group of friends around a
+          table&mdash;<em>finally click</em>.&rdquo;
+        </blockquote>
+        <div class="story-copy">
+          <p>
+            I&rsquo;m Zachary Lloyd Jones—most folks just call me Zack, or spot me online as
+            <strong>Weatwagon</strong>. My career sits at the intersection of software development and
+            systems integration: taking messy, disconnected tools and turning them into workflows that
+            quietly do their job.
+          </p>
+          <p>
+            Outside of work, I&rsquo;m a lifelong tinkerer. If there&rsquo;s a self-hosted server to spin
+            up, a new AI image model to wire into ComfyUI, or a quality-of-life script that makes game
+            night run smoother, I&rsquo;ll probably spend a weekend building it just to see how far it
+            can go.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <div class="section-header">
+        <div>
+          <span class="section-label">03 / Open Tinkering</span>
+          <h2 class="section-title">Things I&rsquo;ve built &amp; explored.</h2>
+        </div>
+        <p class="section-subtitle">
+          A few public repositories from GitHub spanning AI tooling, game server infrastructure, and tabletop utilities.
+        </p>
+      </div>
+
+      <div class="project-list">
+        <a class="project-card" href="https://github.com/Weatwagon/ComfyUI-Qwen-Image-2.1-Prompt-Enhancer" target="_blank" rel="noopener">
+          <div>
+            <div class="project-top">
+              <span class="project-name">ComfyUI Qwen-Image Prompt Enhancer</span>
+              <span class="project-arrow">&nearr;</span>
+            </div>
+            <p class="project-desc">
+              Custom ComfyUI node for Qwen-Image 2.1 prompt enhancement supporting both text-to-image and image editing workflows.
+            </p>
+          </div>
+          <div class="project-meta">
+            <span>Python</span>
+            <span>Generative AI</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/Weatwagon/antigravity-review-loop" target="_blank" rel="noopener">
+          <div>
+            <div class="project-top">
+              <span class="project-name">Agentic Review Loop &amp; Skills</span>
+              <span class="project-arrow">&nearr;</span>
+            </div>
+            <p class="project-desc">
+              Two-stage gated engineering workflows and reusable skills for structured, anti-bloat AI-assisted development.
+            </p>
+          </div>
+          <div class="project-meta">
+            <span>Python / PowerShell</span>
+            <span>Developer Tooling</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/Weatwagon/yolks" target="_blank" rel="noopener">
+          <div>
+            <div class="project-top">
+              <span class="project-name">Pterodactyl Yolks &amp; ARM64 Eggs</span>
+              <span class="project-arrow">&nearr;</span>
+            </div>
+            <p class="project-desc">
+              Docker images and service eggs crafted for Pterodactyl&rsquo;s game server management panel, including ARM64 builds.
+            </p>
+          </div>
+          <div class="project-meta">
+            <span>Docker / Shell</span>
+            <span>Self-Hosting</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/Weatwagon/ddb-character-sheet-campaign-info-enhancement" target="_blank" rel="noopener">
+          <div>
+            <div class="project-top">
+              <span class="project-name">D&amp;D Beyond Campaign Enhancement</span>
+              <span class="project-arrow">&nearr;</span>
+            </div>
+            <p class="project-desc">
+              A JavaScript quality-of-life enhancement bringing campaign context directly into D&amp;D Beyond character sheets.
+            </p>
+          </div>
+          <div class="project-meta">
+            <span>JavaScript</span>
+            <span>Tabletop RPGs</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <div class="contact-box">
+        <div>
+          <h2>Let&rsquo;s build something&mdash;or talk shop.</h2>
+          <p>
+            Whether it&rsquo;s a tricky integration problem, a homelab idea, or a recommendation for
+            what to play next, my inbox is open.
+          </p>
+        </div>
+        <div class="contact-actions">
+          <a href="mailto:zack@zackjones.net" class="btn-primary">Email Zack</a>
+          <button type="button" class="btn-secondary" id="copyEmailFooter">Copy zack@zackjones.net</button>
+        </div>
+      </div>
+
+      <footer class="social-bar">
+        <span>&copy; <span id="year"></span> Zachary Lloyd Jones &bull; Built in Louisiana</span>
+        <div class="social-links">
+          <a href="https://github.com/Weatwagon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/zachary-l-jones/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/weatwagon/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://twitter.com/weatwagon" target="_blank" rel="noopener">X / Twitter</a>
+          <a href="https://www.facebook.com/weatwagon" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <aside class="draft-switcher" aria-label="Draft preview switcher">
+    <span>Draft 1: Bayou Dusk</span>
+    <span>&middot;</span>
+    <a href="/drafts/cosmic-craft/">View Draft 2 &rarr;</a>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied zack@zackjones.net</div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Soft ambient cursor glow
+    const aura = document.getElementById('cursorAura');
+    let auraVisible = false;
+    window.addEventListener('pointermove', (e) => {
+      if (!auraVisible) {
+        aura.style.opacity = '1';
+        auraVisible = true;
+      }
+      aura.style.left = e.clientX + 'px';
+      aura.style.top = e.clientY + 'px';
+    }, { passive: true });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // One-click email copy
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function copyEmail() {
+      navigator.clipboard?.writeText('zack@zackjones.net');
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+    document.getElementById('copyEmailHero').addEventListener('click', copyEmail);
+    document.getElementById('copyEmailFooter').addEventListener('click', copyEmail);
+  </script>
+</body>
+</html>
