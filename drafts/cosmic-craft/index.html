@@ -525,6 +525,25 @@
       font-size: 0.85rem;
     }
 
+    .legal-disclaimer {
+      max-width: 68ch;
+      margin: 12px auto 0;
+      font-size: 0.74rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+
+    .legal-disclaimer a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .legal-disclaimer a:hover {
+      color: var(--accent-cyan);
+    }
+
     /* Draft Switcher */
     .draft-switcher {
       position: fixed;
@@ -832,6 +851,11 @@
 
       <footer>
         &copy; <span id="year"></span> Zachary Lloyd Jones &bull; South West Louisiana
+        <p class="legal-disclaimer">
+          Halo &copy; Microsoft Corporation. zackjones.net was created under Microsoft&rsquo;s
+          &ldquo;<a href="https://www.xbox.com/en-US/developers/rules" target="_blank" rel="noopener">Game Content Usage Rules</a>&rdquo;
+          using assets inspired by Halo, and it is not endorsed by or affiliated with Microsoft.
+        </p>
       </footer>
     </section>
   </main>
@@ -1002,6 +1026,12 @@
         'C': '#38bdf8', // cosmic cyan
         'T': '#2dd4bf', // bioluminescent teal
         'I': '#bae6fd', // ice highlight
+        // Halo Spartan (MJOLNIR olive armor + gold visor)
+        'A': '#5a7342', // armor olive primary
+        'Z': '#3b4e2b', // armor olive shadow
+        'V': '#eab308', // gold visor
+        'Q': '#fef08a', // visor glare
+        'X': '#1e293b', // dark techsuit
         // Runner
         'H': '#6b3e26', // hair brown
         'F': '#f7c59f', // skin tone
@@ -1021,61 +1051,107 @@
         'N': '#475569'  // wing dark
       };
 
-      // 1) Sci-Fi Jetpack Astronaut (16x16, 3 thruster frames)
-      const ASTRO_FRAMES = [
+      // 1a) Halo-Inspired Spartan with Jetpack (16x16, 3 thruster frames)
+      const SPARTAN_FRAMES = [
         [
           '.....KKKKKK.....',
-          '....KWWWWWWK....',
-          '...KWKCCCCKWK...',
-          '...KWKCIICKWK...',
-          '...KWKCCCCKWK...',
-          '....KWWWWWWK....',
-          '..KKKWSWWWSKK...',
-          '.KGGKWWTWWKWK...',
-          '.KGGKWWWWWWK....',
-          '..KKKWWSSWWK....',
-          '...CKWWWWWWK....',
-          '..TCKWWKKWWK....',
-          '....KWWKKWWK....',
-          '....KSSKKSSK....',
-          '.....KK..KK.....',
+          '....KAAAAZZK....',
+          '...KAKQQVVAK....',
+          '...KAKVVVVAK....',
+          '....KZAAAZK.....',
+          '...KKXAAAXKK....',
+          '..KGGKAAAAKAK...',
+          '..KGGKAZZZKXK...',
+          '...KKKAAAAK.....',
+          '...CKXAAAXK.....',
+          '..TCKAAKAAK.....',
+          '....KZZKZZK.....',
+          '....KAXKAXK.....',
+          '....KZZKZZK.....',
+          '.....KK.KK......',
           '................'
         ],
         [
           '.....KKKKKK.....',
-          '....KWWWWWWK....',
-          '...KWKCCCCKWK...',
-          '...KWKCIICKWK...',
-          '...KWKCCCCKWK...',
-          '....KWWWWWWK....',
-          '..KKKWSWWWSKK...',
-          '.KGGKWWTWWKWK...',
-          '.KGGKWWWWWWK....',
-          '..KKKWWSSWWK....',
-          '..TCKWWWWWWK....',
-          '.ITCKWWKKWWK....',
-          '..C.KWWKKWWK....',
-          '....KSSKKSSK....',
-          '.....KK..KK.....',
+          '....KAAAAZZK....',
+          '...KAKQQVVAK....',
+          '...KAKVVVVAK....',
+          '....KZAAAZK.....',
+          '...KKXAAAXKK....',
+          '..KGGKAAAAKAK...',
+          '..KGGKAZZZKXK...',
+          '...KKKAAAAK.....',
+          '..TCKXAAAXK.....',
+          '.ITCKAAKAAK.....',
+          '..C.KZZKZZK.....',
+          '....KAXKAXK.....',
+          '....KZZKZZK.....',
+          '.....KK.KK......',
           '................'
         ],
         [
           '.....KKKKKK.....',
-          '....KWWWWWWK....',
-          '...KWKCCCCKWK...',
-          '...KWKCIICKWK...',
-          '...KWKCCCCKWK...',
-          '....KWWWWWWK....',
-          '..KKKWSWWWSKK...',
-          '.KGGKWWTWWKWK...',
-          '.KGGKWWWWWWK....',
-          '..KKKWWSSWWK....',
-          '...TKWWWWWWK....',
-          '..CCKWWKKWWK....',
-          '.I..KWWKKWWK....',
-          '....KSSKKSSK....',
-          '.....KK..KK.....',
+          '....KAAAAZZK....',
+          '...KAKQQVVAK....',
+          '...KAKVVVVAK....',
+          '....KZAAAZK.....',
+          '...KKXAAAXKK....',
+          '..KGGKAAAAKAK...',
+          '..KGGKAZZZKXK...',
+          '...KKKAAAAK.....',
+          '...TKXAAAXK.....',
+          '..CCKAAKAAK.....',
+          '.I..KZZKZZK.....',
+          '....KAXKAXK.....',
+          '....KZZKZZK.....',
+          '.....KK.KK......',
           '................'
+        ]
+      ];
+
+      // 1b) Halo-Inspired Forerunner Monitor Orb (12x12, 3 glowing-eye pulse frames)
+      const MONITOR_FRAMES = [
+        [
+          '...KKKKKK...',
+          '..KSSGGSSK..',
+          '.KSGGKKGGSK.',
+          '.KSGKCCKGSK.',
+          'KSGKCWWCKGSK',
+          'KSGKCIICKGSK',
+          'KSGKCWWCKGSK',
+          '.KSGKCCKGSK.',
+          '.KSGGKKGGSK.',
+          '..KSSGGSSK..',
+          '...KKKKKK...',
+          '............'
+        ],
+        [
+          '...KKKKKK...',
+          '..KSSGGSSK..',
+          '.KSGGKKGGSK.',
+          '.KSGKIIKGSK.',
+          'KSGKIWWIKGSK',
+          'KSGKIWWIKGSK',
+          'KSGKIWWIKGSK',
+          '.KSGKIIKGSK.',
+          '.KSGGKKGGSK.',
+          '..KSSGGSSK..',
+          '...KKKKKK...',
+          '............'
+        ],
+        [
+          '...KKKKKK...',
+          '..KSSGGSSK..',
+          '.KSGGKKGGSK.',
+          '.KSGKTTKGSK.',
+          'KSGKTCCKTGSK',
+          'KSGKCWWCKGSK',
+          'KSGKTCCKTGSK',
+          '.KSGKTTKGSK.',
+          '.KSGGKKGGSK.',
+          '..KSSGGSSK..',
+          '...KKKKKK...',
+          '............'
         ]
       ];
 
@@ -1327,21 +1403,40 @@
         const scale = sw < 640 ? 2 : 3;
         const spritePx = 16 * scale;
 
-        // 1. Jetpack Astronaut drifting in upper-right cosmic sky with scroll parallax
-        const astroY = 108 + Math.sin(tick * 0.028) * 10 - Math.min(window.scrollY * 0.22, 180);
-        const astroX = sw - Math.max(sw * 0.14, 96) + Math.cos(tick * 0.018) * 14;
-        if (astroY > -spritePx && astroY < sh) {
-          const astroFrame = ASTRO_FRAMES[Math.floor(tick / 8) % ASTRO_FRAMES.length];
-          drawPixelSprite(astroFrame, astroX, astroY, scale, false);
+        // 1a. Halo-Inspired Spartan drifting in upper-right cosmic sky with scroll parallax
+        const spartanY = 108 + Math.sin(tick * 0.028) * 10 - Math.min(window.scrollY * 0.22, 180);
+        const spartanX = sw - Math.max(sw * 0.14, 96) + Math.cos(tick * 0.018) * 14;
+        if (spartanY > -spritePx && spartanY < sh) {
+          const spartanFrame = SPARTAN_FRAMES[Math.floor(tick / 8) % SPARTAN_FRAMES.length];
+          drawPixelSprite(spartanFrame, spartanX, spartanY, scale, false);
           if (tick % 4 === 0) {
             spawnParticle(
-              astroX + 3 * scale,
-              astroY + 11 * scale + (Math.random() - 0.5) * 4,
+              spartanX + 3 * scale,
+              spartanY + 11 * scale + (Math.random() - 0.5) * 4,
               -0.9 - Math.random() * 0.7,
               0.4 + Math.random() * 0.5,
               Math.random() > 0.45 ? '#38bdf8' : '#2dd4bf',
               scale,
               26
+            );
+          }
+        }
+
+        // 1b. Halo-Inspired Forerunner Monitor hovering on upper-left sky with gentle pulse
+        const monitorY = 148 + Math.cos(tick * 0.032) * 9 - Math.min(window.scrollY * 0.16, 150);
+        const monitorX = Math.max(sw * 0.08, 24) + Math.sin(tick * 0.02) * 12;
+        if (sw >= 640 && monitorY > -spritePx && monitorY < sh) {
+          const monitorFrame = MONITOR_FRAMES[Math.floor(tick / 16) % MONITOR_FRAMES.length];
+          drawPixelSprite(monitorFrame, monitorX, monitorY, scale, false);
+          if (tick % 24 === 0) {
+            spawnParticle(
+              monitorX + 6 * scale,
+              monitorY + 6 * scale,
+              (Math.random() - 0.5) * 0.4,
+              -0.35 - Math.random() * 0.25,
+              '#38bdf8',
+              Math.max(2, scale - 1),
+              28
             );
           }
         }
