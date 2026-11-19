@@ -555,6 +555,40 @@
       text-decoration: underline;
     }
 
+    .sprite-toggle-btn {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-ice);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .sprite-toggle-btn:hover {
+      background: rgba(56, 189, 248, 0.24);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .sprite-toggle-btn[aria-pressed="false"] {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.14);
+      color: var(--text-muted);
+    }
+
+    /* Pixel Art Sprite Overlay Canvas */
+    #spriteStage {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 15;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
     .toast {
       position: fixed;
       bottom: 24px;
@@ -597,6 +631,7 @@
 </head>
 <body>
   <canvas id="constellation" aria-hidden="true"></canvas>
+  <canvas id="spriteStage" aria-hidden="true"></canvas>
 
   <div class="nav-wrap">
     <nav class="pill-nav" aria-label="Primary">
@@ -629,7 +664,7 @@
 
     <section id="pillars">
       <div class="pillars">
-        <article class="glass-panel">
+        <article class="glass-panel" id="panel-systems">
           <span class="panel-index">01 /</span>
           <h2>Systems &amp; Code</h2>
           <p>
@@ -647,7 +682,7 @@
           </div>
         </article>
 
-        <article class="glass-panel">
+        <article class="glass-panel" id="panel-ai">
           <span class="panel-index">02 /</span>
           <h2>AI &amp; Self-Hosting</h2>
           <p>
@@ -662,7 +697,7 @@
           </div>
         </article>
 
-        <article class="glass-panel">
+        <article class="glass-panel" id="panel-who">
           <span class="panel-index">03 /</span>
           <h2>Who I Am</h2>
           <p>
@@ -805,6 +840,8 @@
     <a href="/drafts/bayou-dusk/">&larr; View Draft 1</a>
     <span>&middot;</span>
     <span>Draft 2: Cosmic Craft</span>
+    <span>&middot;</span>
+    <button type="button" class="sprite-toggle-btn" id="spriteToggle" aria-pressed="true">Sprites: On</button>
   </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite">Copied zack@zackjones.net</div>
@@ -922,6 +959,502 @@
 
     resize();
     draw();
+
+    // =========================================================================
+    // Custom Multi-Frame Pixel-Art Sprite Engine (100% Original Pixel Art)
+    // =========================================================================
+    (() => {
+      const stage = document.getElementById('spriteStage');
+      const sctx = stage.getContext('2d');
+      const toggleBtn = document.getElementById('spriteToggle');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let spritesEnabled = !prefersReduced;
+
+      function syncToggleUI() {
+        toggleBtn.setAttribute('aria-pressed', String(spritesEnabled));
+        toggleBtn.textContent = spritesEnabled ? 'Sprites: On' : 'Sprites: Off';
+        if (!spritesEnabled) sctx.clearRect(0, 0, stage.width, stage.height);
+      }
+      syncToggleUI();
+
+      toggleBtn.addEventListener('click', () => {
+        spritesEnabled = !spritesEnabled;
+        syncToggleUI();
+      });
+
+      let sw = 0, sh = 0;
+      function resizeStage() {
+        sw = window.innerWidth;
+        sh = window.innerHeight;
+        stage.width = sw;
+        stage.height = sh;
+        sctx.imageSmoothingEnabled = false;
+      }
+      window.addEventListener('resize', resizeStage);
+      resizeStage();
+
+      const PALETTE = {
+        // Common
+        'K': '#0f172a', // dark outline
+        'W': '#f8fafc', // crisp white
+        'S': '#cbd5e1', // light silver
+        'G': '#64748b', // slate gray
+        'C': '#38bdf8', // cosmic cyan
+        'T': '#2dd4bf', // bioluminescent teal
+        'I': '#bae6fd', // ice highlight
+        // Runner
+        'H': '#6b3e26', // hair brown
+        'F': '#f7c59f', // skin tone
+        'J': '#6366f1', // jacket indigo
+        'D': '#3730a3', // jacket shadow
+        'P': '#334155', // pants
+        // Fox spirit
+        'O': '#f97316', // fox orange
+        'R': '#c2410c', // fox deep orange
+        'M': '#fff7ed', // fox cream
+        // Mallard duck
+        'E': '#15803d', // mallard emerald head
+        'L': '#22c55e', // mallard green highlight
+        'Y': '#facc15', // yellow bill
+        'B': '#78350f', // chestnut breast
+        'U': '#92400e', // wing brown
+        'N': '#475569'  // wing dark
+      };
+
+      // 1) Sci-Fi Jetpack Astronaut (16x16, 3 thruster frames)
+      const ASTRO_FRAMES = [
+        [
+          '.....KKKKKK.....',
+          '....KWWWWWWK....',
+          '...KWKCCCCKWK...',
+          '...KWKCIICKWK...',
+          '...KWKCCCCKWK...',
+          '....KWWWWWWK....',
+          '..KKKWSWWWSKK...',
+          '.KGGKWWTWWKWK...',
+          '.KGGKWWWWWWK....',
+          '..KKKWWSSWWK....',
+          '...CKWWWWWWK....',
+          '..TCKWWKKWWK....',
+          '....KWWKKWWK....',
+          '....KSSKKSSK....',
+          '.....KK..KK.....',
+          '................'
+        ],
+        [
+          '.....KKKKKK.....',
+          '....KWWWWWWK....',
+          '...KWKCCCCKWK...',
+          '...KWKCIICKWK...',
+          '...KWKCCCCKWK...',
+          '....KWWWWWWK....',
+          '..KKKWSWWWSKK...',
+          '.KGGKWWTWWKWK...',
+          '.KGGKWWWWWWK....',
+          '..KKKWWSSWWK....',
+          '..TCKWWWWWWK....',
+          '.ITCKWWKKWWK....',
+          '..C.KWWKKWWK....',
+          '....KSSKKSSK....',
+          '.....KK..KK.....',
+          '................'
+        ],
+        [
+          '.....KKKKKK.....',
+          '....KWWWWWWK....',
+          '...KWKCCCCKWK...',
+          '...KWKCIICKWK...',
+          '...KWKCCCCKWK...',
+          '....KWWWWWWK....',
+          '..KKKWSWWWSKK...',
+          '.KGGKWWTWWKWK...',
+          '.KGGKWWWWWWK....',
+          '..KKKWWSSWWK....',
+          '...TKWWWWWWK....',
+          '..CCKWWKKWWK....',
+          '.I..KWWKKWWK....',
+          '....KSSKKSSK....',
+          '.....KK..KK.....',
+          '................'
+        ]
+      ];
+
+      // 2) Retro Platformer Runner (16x16, 4 run-cycle frames)
+      const RUNNER_FRAMES = [
+        [
+          '.....KKKKK......',
+          '....KHHHHHK.....',
+          '....KHHFFFK.....',
+          '....KFFKFFK.....',
+          '.....KFFFFK.....',
+          '....KKJJJKK.....',
+          '...KJJJJDJK.....',
+          '...KFKJJJJK.....',
+          '....KKJJDKK.....',
+          '.....KPPPK......',
+          '....KPPKPPK.....',
+          '...KPPK..KPPK...',
+          '...KKK....KKK...',
+          '................',
+          '................',
+          '................'
+        ],
+        [
+          '................',
+          '.....KKKKK......',
+          '....KHHHHHK.....',
+          '....KHHFFFK.....',
+          '....KFFKFFK.....',
+          '.....KFFFFK.....',
+          '....KKJJJKK.....',
+          '....KJJJDJK.....',
+          '....KJJJFFK.....',
+          '.....KJJDKK.....',
+          '.....KPPPK......',
+          '.....KPPPK......',
+          '.....KPKPK......',
+          '.....KK.KK......',
+          '................',
+          '................'
+        ],
+        [
+          '.....KKKKK......',
+          '....KHHHHHK.....',
+          '....KHHFFFK.....',
+          '....KFFKFFK.....',
+          '.....KFFFFK.....',
+          '....KKJJJKK.....',
+          '....KJJJDJKK....',
+          '....KJJJJFK.....',
+          '....KKDJJKK.....',
+          '.....KPPPK......',
+          '....KPPKPPK.....',
+          '...KPPK..KPK....',
+          '....KK....KK....',
+          '................',
+          '................',
+          '................'
+        ],
+        [
+          '................',
+          '.....KKKKK......',
+          '....KHHHHHK.....',
+          '....KHHFFFK.....',
+          '....KFFKFFK.....',
+          '.....KFFFFK.....',
+          '...KKJJJJKK.....',
+          '...KFKJJDJK.....',
+          '....KKJJJJK.....',
+          '.....KPPPK......',
+          '.....KPPPK......',
+          '....KPPKPK......',
+          '....KK..KK......',
+          '................',
+          '................',
+          '................'
+        ]
+      ];
+
+      // 3) Pixel Fox-Spirit Companion (16x16, 3 tail-wag / idle frames)
+      const FOX_FRAMES = [
+        [
+          '..KK.....KK.....',
+          '.KOOK...KOOK....',
+          '.KOMOK.KOMOK....',
+          '.KOOOOOOOOOK....',
+          '.KOOKOOOKOK..KK.',
+          '.KOMOOKOMOK.KMMK',
+          '..KMMMMMMK..KMMK',
+          '...KOOOOOK.KOOK.',
+          '..KOOMMMOOKOOOK.',
+          '..KOOMMMOOOOOK..',
+          '..KOOOOOOOOKK...',
+          '..KRRK..KRRK....',
+          '..KMMK..KMMK....',
+          '...KK....KK.....',
+          '................',
+          '................'
+        ],
+        [
+          '..KK.....KK.....',
+          '.KOOK...KOOK....',
+          '.KOMOK.KOMOK....',
+          '.KOOOOOOOOOK.KK.',
+          '.KOOKOOOKOK.KMMK',
+          '.KOMOOKOMOK.KMMK',
+          '..KMMMMMMK..KOOK',
+          '...KOOOOOK.KOOK.',
+          '..KOOMMMOOKOOOK.',
+          '..KOOMMMOOOOOK..',
+          '..KOOOOOOOOKK...',
+          '..KRRK..KRRK....',
+          '..KMMK..KMMK....',
+          '...KK....KK.....',
+          '................',
+          '................'
+        ],
+        [
+          '................',
+          '..KK.....KK.....',
+          '.KOOK...KOOK....',
+          '.KOMOK.KOMOK....',
+          '.KOOOOOOOOOK....',
+          '.KOOKOOOKOK..KK.',
+          '.KOMOOKOMOK.KMMK',
+          '..KMMMMMMK.KOMMK',
+          '...KOOOOOK.KOOK.',
+          '..KOOMMMOOKOOOK.',
+          '..KOOOOOOOOKK...',
+          '..KRRK..KRRK....',
+          '..KMMK..KMMK....',
+          '...KK....KK.....',
+          '................',
+          '................'
+        ]
+      ];
+
+      // 4) 8-Bit Flying Mallard Duck (16x14, 3 wing-flap frames, facing left)
+      const DUCK_FRAMES = [
+        [
+          '..........KKK...',
+          '.........KWWWK..',
+          '........KWWWNNK.',
+          '...KKK..KNNUUK..',
+          '..KELKK..KUUUK..',
+          'KYYEEEK.KBBBKK..',
+          '.KKWWWK.KBBBUUK.',
+          '...KBBKKBBBBUUWK',
+          '....KBBBBBBBUUWK',
+          '.....KKKKKKKKKK.',
+          '................',
+          '................',
+          '................',
+          '................'
+        ],
+        [
+          '................',
+          '................',
+          '...KKK..........',
+          '..KELKK...KKKK..',
+          'KYYEEEK..KWWNNK.',
+          '.KKWWWK.KBBBUUK.',
+          '...KBBKKBBBBBUWK',
+          '....KBBBBBBBBKK.',
+          '.....KKKKKKKK...',
+          '................',
+          '................',
+          '................',
+          '................',
+          '................'
+        ],
+        [
+          '................',
+          '................',
+          '...KKK..........',
+          '..KELKK.........',
+          'KYYEEEK..KKKK...',
+          '.KKWWWK.KBBBBKK.',
+          '...KBBKKBBBBBBUK',
+          '....KBBBBBBBUUK.',
+          '.....KKKWWNNKK..',
+          '.......KWWWK....',
+          '........KKK.....',
+          '................',
+          '................',
+          '................'
+        ]
+      ];
+
+      function drawPixelSprite(frame, x, y, scale, flipX = false) {
+        const rows = frame.length;
+        const cols = frame[0].length;
+        const px = Math.round(x);
+        const py = Math.round(y);
+        for (let r = 0; r < rows; r++) {
+          const row = frame[r];
+          for (let c = 0; c < cols; c++) {
+            const ch = row[c];
+            if (ch === '.') continue;
+            const color = PALETTE[ch];
+            if (!color) continue;
+            const drawCol = flipX ? (cols - 1 - c) : c;
+            sctx.fillStyle = color;
+            sctx.fillRect(px + drawCol * scale, py + r * scale, scale, scale);
+          }
+        }
+      }
+
+      // Tiny pixel particles (thruster sparks, runner dust, fox magic)
+      const particles = [];
+      function spawnParticle(x, y, vx, vy, color, size, life) {
+        if (particles.length > 90) return;
+        particles.push({ x, y, vx, vy, color, size, life, maxLife: life });
+      }
+
+      // State for each character
+      const panelSystems = document.getElementById('panel-systems');
+      const panelAI = document.getElementById('panel-ai');
+      const panelWho = document.getElementById('panel-who');
+
+      const runnerState = { progress: 0.12, dir: 1, speed: 0.0032 };
+      const foxState = { hopVel: 0, hopY: 0 };
+      const duckState = { x: -80, dir: 1, active: false, baseOffset: 0 };
+
+      let lastScrollY = window.scrollY;
+      let scrollEnergy = 0;
+
+      window.addEventListener('scroll', () => {
+        const dy = Math.abs(window.scrollY - lastScrollY);
+        lastScrollY = window.scrollY;
+        scrollEnergy = Math.min(scrollEnergy + dy * 0.025, 4);
+      }, { passive: true });
+
+      if (panelAI) {
+        panelAI.addEventListener('mouseenter', () => {
+          if (foxState.hopY === 0) foxState.hopVel = -4.2;
+        });
+      }
+
+      let tick = 0;
+      function renderSprites() {
+        requestAnimationFrame(renderSprites);
+        if (!spritesEnabled) return;
+
+        tick++;
+        scrollEnergy *= 0.94;
+        sctx.clearRect(0, 0, sw, sh);
+
+        const scale = sw < 640 ? 2 : 3;
+        const spritePx = 16 * scale;
+
+        // 1. Jetpack Astronaut drifting in upper-right cosmic sky with scroll parallax
+        const astroY = 108 + Math.sin(tick * 0.028) * 10 - Math.min(window.scrollY * 0.22, 180);
+        const astroX = sw - Math.max(sw * 0.14, 96) + Math.cos(tick * 0.018) * 14;
+        if (astroY > -spritePx && astroY < sh) {
+          const astroFrame = ASTRO_FRAMES[Math.floor(tick / 8) % ASTRO_FRAMES.length];
+          drawPixelSprite(astroFrame, astroX, astroY, scale, false);
+          if (tick % 4 === 0) {
+            spawnParticle(
+              astroX + 3 * scale,
+              astroY + 11 * scale + (Math.random() - 0.5) * 4,
+              -0.9 - Math.random() * 0.7,
+              0.4 + Math.random() * 0.5,
+              Math.random() > 0.45 ? '#38bdf8' : '#2dd4bf',
+              scale,
+              26
+            );
+          }
+        }
+
+        // 2. Retro Runner dashing along the top edge of "01 / Systems & Code"
+        if (panelSystems) {
+          const r = panelSystems.getBoundingClientRect();
+          if (r.top > -40 && r.top < sh + 40) {
+            const boost = 1 + scrollEnergy * 0.55;
+            runnerState.progress += runnerState.speed * runnerState.dir * boost;
+            if (runnerState.progress >= 0.88) {
+              runnerState.progress = 0.88;
+              runnerState.dir = -1;
+            } else if (runnerState.progress <= 0.06) {
+              runnerState.progress = 0.06;
+              runnerState.dir = 1;
+            }
+            const rx = r.left + r.width * runnerState.progress - spritePx * 0.5;
+            const ry = r.top - 13 * scale + 1;
+            const runFrame = RUNNER_FRAMES[Math.floor(tick / 6) % RUNNER_FRAMES.length];
+            drawPixelSprite(runFrame, rx, ry, scale, runnerState.dir < 0);
+
+            if (tick % 6 === 0) {
+              spawnParticle(
+                rx + (runnerState.dir > 0 ? 3 * scale : 12 * scale),
+                r.top - scale,
+                -runnerState.dir * (0.5 + Math.random() * 0.6),
+                -0.3 - Math.random() * 0.4,
+                Math.random() > 0.5 ? '#bae6fd' : '#38bdf8',
+                Math.max(2, scale - 1),
+                20
+              );
+            }
+          }
+        }
+
+        // 3. Pixel Fox Companion perched on "02 / AI & Self-Hosting"
+        if (panelAI) {
+          const r = panelAI.getBoundingClientRect();
+          if (r.top > -40 && r.top < sh + 40) {
+            if (scrollEnergy > 1.8 && foxState.hopY === 0 && Math.random() < 0.06) {
+              foxState.hopVel = -3.8;
+            }
+            foxState.hopY += foxState.hopVel;
+            if (foxState.hopY < 0) {
+              foxState.hopVel += 0.32;
+            } else {
+              foxState.hopY = 0;
+              foxState.hopVel = 0;
+            }
+            const fx = r.right - spritePx - 18;
+            const fy = r.top - 14 * scale + 2 + foxState.hopY;
+            const foxFrame = FOX_FRAMES[Math.floor(tick / 14) % FOX_FRAMES.length];
+            drawPixelSprite(foxFrame, fx, fy, scale, false);
+
+            if (tick % 18 === 0) {
+              spawnParticle(
+                fx + (4 + Math.random() * 10) * scale,
+                fy + (2 + Math.random() * 4) * scale,
+                (Math.random() - 0.5) * 0.3,
+                -0.45 - Math.random() * 0.3,
+                '#2dd4bf',
+                Math.max(2, scale - 1),
+                32
+              );
+            }
+          }
+        }
+
+        // 4. 8-Bit Flying Mallard Duck gliding across the sky near "03 / Who I Am"
+        if (panelWho) {
+          const r = panelWho.getBoundingClientRect();
+          if (r.top < sh + 120 && r.bottom > -120) {
+            if (!duckState.active) {
+              duckState.active = true;
+              duckState.x = sw + 40;
+              duckState.dir = -1;
+            }
+            const duckSpeed = 1.65 + scrollEnergy * 0.45;
+            duckState.x += duckSpeed * duckState.dir;
+            if (duckState.dir < 0 && duckState.x < -spritePx - 60) {
+              duckState.dir = 1;
+              duckState.baseOffset = (Math.random() - 0.5) * 34;
+            } else if (duckState.dir > 0 && duckState.x > sw + 60) {
+              duckState.dir = -1;
+              duckState.baseOffset = (Math.random() - 0.5) * 34;
+            }
+            const dy = r.top - 15 * scale + Math.sin(tick * 0.06) * 14 + duckState.baseOffset;
+            const duckFrame = DUCK_FRAMES[Math.floor(tick / 7) % DUCK_FRAMES.length];
+            // DUCK_FRAMES face left by default, so flipX when moving right
+            drawPixelSprite(duckFrame, duckState.x, dy, scale, duckState.dir > 0);
+          }
+        }
+
+        // Update & draw pixel particles
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life--;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          sctx.globalAlpha = (p.life / p.maxLife) * 0.85;
+          sctx.fillStyle = p.color;
+          sctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+        }
+        sctx.globalAlpha = 1;
+      }
+
+      renderSprites();
+    })();
   </script>
 </body>
 </html>
